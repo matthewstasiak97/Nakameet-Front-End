@@ -18,9 +18,10 @@ function NavBar() {
         <ul>
           <li>Welcome, {user.username}</li>
           <li>
-            <button>Events
-            <Link to="/"></Link>
-            </button>
+              Events
+              <Link to="/">
+              <button>Events</button>
+              </Link>
           </li>
           <li>
             <button onClick={handleSignOut}>Sign Out</button>
@@ -29,19 +30,21 @@ function NavBar() {
       ) : (
         <ul>
           <li>
-            <button>Events
-            <Link to="/events"></Link>
-            </button>
+            <Link to="/events">
+              <button>Events</button>
+            </Link>
           </li>
           <li>
-            <button>Sign up
-            <Link to="/sign-up"></Link>
-            </button>
+           
+              <Link to="/sign-up">
+              <button>Sign up</button>
+              </Link>
+            
           </li>
           <li>
-            <button>Sign In
-            <Link to="/sign-in"></Link>
-            </button>
+              <Link to="/sign-in">
+              <button>Sign in</button>
+              </Link>
           </li>
         </ul>
       )}

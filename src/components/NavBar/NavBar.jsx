@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
+import "./NavBar.css";
 
 function NavBar() {
   const { user, setUser } = useContext(UserContext);
@@ -13,43 +14,46 @@ function NavBar() {
   };
 
   return (
-    <nav>
+    <nav className="navbar">
       {user ? (
-        <ul>
-          <li>Welcome, {user.username}</li>
-          <li>
-              Events
-              <Link to="/">
-              <button>Events</button>
-              </Link>
+        <ul className="navbar-list">
+          <li className="navbar-item welcome-text">Welcome, {user.username}</li>
+          <li className="navbar-item">
+            Events
+            <Link to="/">
+              <button className="navbar-button btn-events">Events</button>
+            </Link>
           </li>
-          <li>
-            <button onClick={handleSignOut}>Sign Out</button>
+          <li className="navbar-item">
+            <button
+              onClick={handleSignOut}
+              className="navbar-button btn-signout"
+            >
+              Sign Out
+            </button>
           </li>
         </ul>
       ) : (
-        <ul>
-          <li>
+        <ul className="navbar-list">
+          <li className="navbar-item">
             <Link to="/events">
-              <button>Events</button>
+              <button className="navbar-button btn-events">Events</button>
             </Link>
           </li>
-          <li>
-           
-              <Link to="/sign-up">
-              <button>Sign up</button>
-              </Link>
-            
+          <li className="navbar-item">
+            <Link to="/sign-up">
+              <button className="navbar-button btn-signup">Sign up</button>
+            </Link>
           </li>
-          <li>
-              <Link to="/sign-in">
-              <button>Sign in</button>
-              </Link>
+          <li className="navbar-item">
+            <Link to="/sign-in">
+              <button className="navbar-button btn-signin">Sign in</button>
+            </Link>
           </li>
         </ul>
       )}
     </nav>
-  );
+);
 }
 
 export default NavBar;

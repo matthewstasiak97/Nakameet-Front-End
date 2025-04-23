@@ -1,6 +1,6 @@
 import SignInForm from "../src/components/SignInForm/SignInForm";
 
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`; // Needs Backend server route
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/users`;
 
 export const signUp = async (formData) => {
   try {

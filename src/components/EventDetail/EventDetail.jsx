@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 // import { showEvent, deleteEvent } from "../../services/eventService.js";
-import  { index, showEvent, createEvent, updateEvent, deleteEvent } from '../../services/eventService.js'
+import { showEvent } from "../../services/eventService.js";
 
 const EventDetail = () => {
   const { id } = useParams();

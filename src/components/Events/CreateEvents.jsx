@@ -1,20 +1,20 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
-import { create } from '../../../services/eventsService';
-import './CreateEvents.css';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
+import { create } from "../../services/eventService.js";
+//import "./CreateEvents.css";
 
 const CreateEvents = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    location: '',
-    date_time: '',
-    category_id: '',
+    title: "",
+    description: "",
+    location: "",
+    date_time: "",
+    category_id: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +40,7 @@ const CreateEvents = () => {
 
       // Create a proper ISO string for the date
       const dateTime = new Date(formData.date_time).toISOString();
-      
+
       const eventData = {
         ...formData,
         date_time: dateTime,
@@ -148,4 +148,4 @@ const CreateEvents = () => {
   );
 };
 
-export default CreateEvents; 
+export default CreateEvents;

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { show } from "../../../services/userService.js";
-
+import { show } from "../../services/userService.js";
 function Show() {
   const { id } = useParams();
   const [person, setPerson] = useState({});

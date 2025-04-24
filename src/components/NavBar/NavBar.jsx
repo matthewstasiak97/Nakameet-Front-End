@@ -24,12 +24,14 @@ function NavBar() {
             </Link>
           </li>
           <li className="navbar-item">
-            <button
-              onClick={handleSignOut}
-              className="navbar-button btn-signout"
-            >
-              Sign Out
-            </button>
+            <Link to="/">
+              <button
+                onClick={handleSignOut}
+                className="navbar-button btn-signout"
+              >
+                Sign Out
+              </button>
+            </Link>
           </li>
         </ul>
       ) : (
@@ -52,7 +54,7 @@ function NavBar() {
         </ul>
       )}
     </nav>
-);
+  );
 }
 
 export default NavBar;

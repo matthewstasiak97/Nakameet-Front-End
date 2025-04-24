@@ -1,10 +1,10 @@
 import SignInForm from "../src/components/SignInForm/SignInForm";
 
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/users`;
+const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/users`;
 
 export const signUp = async (formData) => {
   try {
-    const res = await fetch(`${BASE_URL / signUp}`, {
+    const res = await fetch(`${BASE_URL}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -31,7 +31,7 @@ export const signUp = async (formData) => {
 
 export const signIn = async (formData) => {
   try {
-    const res = await fetch(`${BASE_URL / signUp}`, {
+    const res = await fetch(`${BASE_URL}/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

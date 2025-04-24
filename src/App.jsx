@@ -20,10 +20,10 @@ const App = () => {
         <NavBar />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/events" element={<Home />} />
             <Route path="/events/:id" element={<EventDetails />} />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/signin" element={<SignInForm />} />
+            <Route path="/sign-up" element={<SignUpForm />} />
+            <Route path="/sign-in" element={<SignInForm />} />
             {/* <Route path="/events/create" element={<CreateEvents />} />
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/events/:id/edit" element={<EditEvent />} />

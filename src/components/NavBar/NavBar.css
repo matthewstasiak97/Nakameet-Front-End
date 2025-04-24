@@ -49,6 +49,12 @@
   transition: transform 0.1s ease, filter 0.2s ease;
 }
 
+.navbar-button a {
+  color: #333333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
 /* Remove any focus outline */
 .navbar-button:focus {
   outline: none;

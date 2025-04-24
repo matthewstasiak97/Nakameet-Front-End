@@ -1,24 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavBar.css";
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const handleClick = (path) => {
+    navigate(path);
+  };
+
   return (
     <nav className="navbar">
       <ul className="navbar-list">
         <li className="navbar-item">
-          <Link to="/events">
-            <button className="navbar-button btn-events">Events</button>
-          </Link>
+          <button 
+            className="navbar-button btn-events"
+            onClick={() => handleClick('/events')}
+          >
+            Events
+          </button>
         </li>
         <li className="navbar-item">
-          <Link to="/sign-up">
-            <button className="navbar-button btn-signup">Sign up</button>
-          </Link>
+          <button 
+            className="navbar-button btn-signup"
+            onClick={() => handleClick('/signup')}
+          >
+            Sign up
+          </button>
         </li>
         <li className="navbar-item">
-          <Link to="/sign-in">
-            <button className="navbar-button btn-signin">Sign in</button>
-          </Link>
+          <button 
+            className="navbar-button btn-signin"
+            onClick={() => handleClick('/signin')}
+          >
+            Sign in
+          </button>
         </li>
       </ul>
     </nav>

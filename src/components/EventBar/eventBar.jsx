@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function EventBar({ searchText }) {
+function EventBar({ searchText = "sunset" }) {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -15,14 +15,15 @@ function EventBar({ searchText }) {
     }
     loadEvents();
   }, []);
-  // const filteredEvents = events.filter(evt =>
-  //   evt.title.toLowerCase().includes(searchText.toLowerCase())
-  // );
+  const filteredEvents = events.filter((evt) => {
+    console.log(evt.title, searchText);
+    evt.title.toLowerCase().includes(searchText.toLowerCase());
+  });
 
   return (
     <div className="event-bar">
       <ul>
-        {filteredEvents.map((evt) => (
+        {events.map((evt) => (
           <li key={evt._id}>
             <h3>{evt.title}</h3>
             <p>{evt.description}</p>

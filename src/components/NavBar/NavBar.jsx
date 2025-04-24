@@ -1,15 +1,13 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import "./NavBar.css";
 
 function NavBar() {
   const { user, setUser } = useContext(UserContext);
-  const navigate = useNavigate();
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/");
   };
 
   return (
@@ -24,12 +22,14 @@ function NavBar() {
             </Link>
           </li>
           <li className="navbar-item">
-            <button
-              onClick={handleSignOut}
-              className="navbar-button btn-signout"
-            >
-              Sign Out
-            </button>
+            <Link to="/">
+              <button
+                onClick={handleSignOut}
+                className="navbar-button btn-signout"
+              >
+                Sign Out
+              </button>
+            </Link>
           </li>
         </ul>
       ) : (
@@ -52,7 +52,7 @@ function NavBar() {
         </ul>
       )}
     </nav>
-);
+  );
 }
 
 export default NavBar;

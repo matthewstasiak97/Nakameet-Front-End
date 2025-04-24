@@ -4,8 +4,10 @@ import "./NavBar.css";
 function NavBar() {
   const navigate = useNavigate();
 
-  const handleClick = (path) => {
-    navigate(path);
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
   };
 
   return (

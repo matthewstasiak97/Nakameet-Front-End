@@ -1,8 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Routes, Route } from "react-router-dom";
+import { useContext, useState } from "react";
+//import { Routes, Route } from "react-router";
 import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
+import SignUpForm from "./components/SignUpForm/SignUpForm.jsx";
+import SignInForm from "./components/SignInForm/SignInForm.jsx";
+import Show from "./components/Show/Show.jsx";
+import { UserContext } from "./contexts/UserContext";
 
 const App = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="app">
       <NavBar />

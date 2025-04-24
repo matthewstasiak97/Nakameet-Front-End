@@ -3,7 +3,7 @@ import "./NavBar.css";
 
 function NavBar() {
   const navigate = useNavigate();
-
+// console.log(user);
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);

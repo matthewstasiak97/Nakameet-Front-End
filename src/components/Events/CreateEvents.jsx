@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import { create } from "../../services/eventService.js";
+import { createEvent } from "../../services/eventService.js";
 //import "./CreateEvents.css";
 
 const CreateEvents = () => {
@@ -48,7 +48,7 @@ const CreateEvents = () => {
       };
 
       console.log("Submitting event data:", eventData);
-      await create(eventData);
+      await createEvent(eventData);
       navigate("/events");
     } catch (err) {
       console.error("Error creating event:", err);

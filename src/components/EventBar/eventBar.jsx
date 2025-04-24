@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function EventBar({ searchText }) {
   const [events, setEvents] = useState([]);
@@ -6,25 +6,23 @@ function EventBar({ searchText }) {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res  = await fetch('http://localhost:3000/events'); //change this to use the .env
+        const res = await fetch("http://localhost:3000/events"); //change this to use the .env
         const data = await res.json();
         setEvents(data);
       } catch (err) {
-        console.error('Failed to load events:', err);
+        console.error("Failed to load events:", err);
       }
     }
     loadEvents();
   }, []);
-
-  // Filter based on the prop searchText
-  const filteredEvents = events.filter(evt =>
-    evt.title.toLowerCase().includes(searchText.toLowerCase())
-  );
+  // const filteredEvents = events.filter(evt =>
+  //   evt.title.toLowerCase().includes(searchText.toLowerCase())
+  // );
 
   return (
     <div className="event-bar">
       <ul>
-        {filteredEvents.map(evt => (
+        {filteredEvents.map((evt) => (
           <li key={evt._id}>
             <h3>{evt.title}</h3>
             <p>{evt.description}</p>

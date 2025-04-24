@@ -1,15 +1,13 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import "./NavBar.css";
 
 function NavBar() {
   const { user, setUser } = useContext(UserContext);
-  const navigate = useNavigate();
   const handleSignOut = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/");
   };
 
   return (

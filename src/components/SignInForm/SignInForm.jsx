@@ -1,9 +1,8 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router";
-// import { signIn } from "../../services/userService.js";
+import { Link, useNavigate } from "react-router";
+import { signIn } from "../../services/authService.js";
 
 const SignInForm = () => {
-  const navigate = useNavigate();
   const { setUser } = useContext();
 
   const [formData, setFormData] = useState({
@@ -24,7 +23,6 @@ const SignInForm = () => {
     const signedInUser = await signIn(formData);
 
     setUser(signedInUser);
-    navigate("/");
   };
 
   return (
@@ -55,7 +53,9 @@ const SignInForm = () => {
           />
         </div>
         <div>
-          <button type="submit">Sign In</button>
+          <Link to="/">
+            <button type="submit">Sign In</button>
+          </Link>
         </div>
       </form>
     </main>

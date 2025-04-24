@@ -64,4 +64,4 @@ const deleteEvent = async (id) => {
   }
 };
 
-export { index, showEvent, createEvent, updateEvent, deleteEvent };
+export default { index, showEvent, createEvent, updateEvent, deleteEvent };

@@ -2,7 +2,27 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { createEvent } from "../../services/eventService.js";
-//import "./CreateEvents.css";
+import "./CreateEvents.css";
+
+const CATEGORIES = [
+  { id: "music", name: "Music" },
+  { id: "sports", name: "Sports" },
+  { id: "food", name: "Food & Drink" },
+  { id: "arts", name: "Arts & Culture" },
+  { id: "community", name: "Community" },
+  { id: "nightlife", name: "Nightlife" },
+  { id: "games", name: "Games" },
+  { id: "education", name: "Education" },
+  { id: "health", name: "Health & Wellness" },
+  { id: "outdoors", name: "Outdoors & Adventure" },
+  { id: "tech", name: "Technology" },
+  { id: "fashion", name: "Fashion" },
+  { id: "business", name: "Business & Networking" },
+  { id: "science", name: "Science & Innovation" },
+  { id: "travel", name: "Travel" },
+  { id: "dating", name: "Dating" },
+  { id: "other", name: "Other" }
+];
 
 const CreateEvents = () => {
   const navigate = useNavigate();
@@ -12,15 +32,15 @@ const CreateEvents = () => {
     description: "",
     location: "",
     date_time: "",
-    category_id: "",
+    category_id: ""
   });
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+    setFormData(prevFormData => ({
       ...prevFormData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -32,22 +52,19 @@ const CreateEvents = () => {
         return;
       }
 
-      // Make sure we have a valid date
       if (!formData.date_time) {
         setError("Please select a date and time for the event");
         return;
       }
 
-      // Create a proper ISO string for the date
       const dateTime = new Date(formData.date_time).toISOString();
 
       const eventData = {
         ...formData,
         date_time: dateTime,
-        user_id: user._id,
+        user_id: user._id
       };
 
-      console.log("Submitting event data:", eventData);
       await createEvent(eventData);
       navigate("/events");
     } catch (err) {
@@ -79,6 +96,7 @@ const CreateEvents = () => {
             onChange={handleChange}
             required
             placeholder="Enter event title"
+            autoComplete="off"
           />
         </div>
 
@@ -92,32 +110,36 @@ const CreateEvents = () => {
             required
             placeholder="Describe your event"
             rows="4"
+            autoComplete="off"
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="location">Location:</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-            placeholder="Enter event location"
-          />
-        </div>
+        <div className="form-group grid">
+          <div>
+            <label htmlFor="date_time">Date and Time:</label>
+            <input
+              type="datetime-local"
+              id="date_time"
+              name="date_time"
+              value={formData.date_time}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="date_time">Date and Time:</label>
-          <input
-            type="datetime-local"
-            id="date_time"
-            name="date_time"
-            value={formData.date_time}
-            onChange={handleChange}
-            required
-          />
+          <div>
+            <label htmlFor="location">Location:</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+              placeholder="Enter event location"
+              autoComplete="off"
+            />
+          </div>
         </div>
 
         <div className="form-group">
@@ -130,27 +152,11 @@ const CreateEvents = () => {
             required
           >
             <option value="">Select a category</option>
-            <option value="music">Music</option>
-            <option value="sports">Sports</option>
-            <option value="food">Food & Drink</option>
-            <option value="arts">Arts & Culture</option>
-            <option value="community">Community</option>
-            <option value="nightlife">Nightlife</option>
-            <option value="other">Other</option>
-            <option value="games">Games</option>
-            <option value="education">Education</option>
-            <option value="health">Health & Wellness</option>
-            <option value="outdoors">Outdoors & Adventure</option>
-            <option value="tech">Technology</option>
-            <option value="fashion">Fashion</option>
-            <option value="business">Business & Networking</option>
-            <option value="science">Science & Innovation</option>
-            <option value="food">Food & Drink</option>
-            <option value="fashion">Fashion</option>
-            <option value="travel">Travel</option>
-            <option value="dating">Dating</option>
-
-            
+            {CATEGORIES.map(category => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
 

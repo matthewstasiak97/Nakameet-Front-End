@@ -45,7 +45,6 @@ const EventDetail = () => {
         const eventData = await showEvent(id);
         setEvent(eventData);
         
-        // Format date for input
         const dateTime = eventData.date_time ? new Date(eventData.date_time) : new Date();
         const formattedDate = dateTime.toISOString().slice(0, 16);
         
@@ -167,111 +166,115 @@ const EventDetail = () => {
     );
   }
 
+  const commonFormClasses = {
+    input: "block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400",
+    label: "block text-sm font-medium leading-6 text-gray-900 mb-2",
+    button: "rounded-lg px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-in-out",
+    buttonPrimary: "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
+    buttonSecondary: "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+  };
+
   const formContent = (
     <div className="space-y-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">
+          {id ? 'Edit Event' : 'Create New Event'}
+        </h1>
+      </div>
+
       <div className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="title" className={commonFormClasses.label}>
             Event Title
           </label>
-          <div className="mt-2">
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              className="block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400"
-              placeholder="Enter event title"
-            />
-          </div>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            className={commonFormClasses.input}
+            placeholder="Enter event title"
+          />
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="description" className={commonFormClasses.label}>
             Description
           </label>
-          <div className="mt-2">
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows="4"
-              className="block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400"
-              placeholder="Describe your event"
-            />
-          </div>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            rows="4"
+            className={commonFormClasses.input}
+            placeholder="Describe your event"
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label htmlFor="date_time" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="date_time" className={commonFormClasses.label}>
               Date & Time
             </label>
-            <div className="mt-2">
-              <input
-                type="datetime-local"
-                id="date_time"
-                name="date_time"
-                value={formData.date_time}
-                onChange={handleInputChange}
-                className="block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400"
-              />
-            </div>
+            <input
+              type="datetime-local"
+              id="date_time"
+              name="date_time"
+              value={formData.date_time}
+              onChange={handleInputChange}
+              className={commonFormClasses.input}
+            />
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="location" className={commonFormClasses.label}>
               Location
             </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleInputChange}
-                className="block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400"
-                placeholder="Event location"
-              />
-            </div>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              className={commonFormClasses.input}
+              placeholder="Event location"
+            />
           </div>
         </div>
 
         <div>
-          <label htmlFor="categories" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="categories" className={commonFormClasses.label}>
             Category
           </label>
-          <div className="mt-2">
-            <select
-              id="categories"
-              name="categories"
-              value={formData.categories}
-              onChange={handleInputChange}
-              className="block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400"
-            >
-              <option value="">Select a category</option>
-              {CATEGORIES.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            id="categories"
+            name="categories"
+            value={formData.categories}
+            onChange={handleInputChange}
+            className={commonFormClasses.input}
+          >
+            <option value="">Select a category</option>
+            {CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      <div className="flex justify-end space-x-4">
+      <div className="flex justify-end space-x-4 pt-6">
         <button
           onClick={handleCancel}
-          className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all duration-200 ease-in-out"
+          className={`${commonFormClasses.button} ${commonFormClasses.buttonSecondary}`}
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 ease-in-out"
+          className={`${commonFormClasses.button} ${commonFormClasses.buttonPrimary}`}
         >
           {id ? 'Save Changes' : 'Create Event'}
         </button>
@@ -282,45 +285,45 @@ const EventDetail = () => {
   const viewContent = event && (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">{event.title}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{event.title}</h1>
         <div className="flex space-x-4">
           <button
             onClick={handleEdit}
-            className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 ease-in-out"
+            className={`${commonFormClasses.button} ${commonFormClasses.buttonPrimary}`}
           >
             Edit Event
           </button>
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className="rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-50 transition-all duration-200 ease-in-out"
+            className={`${commonFormClasses.button} bg-red-600 text-white hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-50`}
           >
             {isDeleting ? "Deleting..." : "Delete Event"}
           </button>
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mt-8">
         <div>
-          <h3 className="text-sm font-medium leading-6 text-gray-900">Description</h3>
-          <p className="mt-2 text-sm text-gray-600">{event.description}</p>
+          <h3 className={commonFormClasses.label}>Description</h3>
+          <p className="text-sm text-gray-600">{event.description}</p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <h3 className="text-sm font-medium leading-6 text-gray-900">Date & Time</h3>
-            <p className="mt-2 text-sm text-gray-600">{formatDate(event.date_time)}</p>
+            <h3 className={commonFormClasses.label}>Date & Time</h3>
+            <p className="text-sm text-gray-600">{formatDate(event.date_time)}</p>
           </div>
 
           <div>
-            <h3 className="text-sm font-medium leading-6 text-gray-900">Location</h3>
-            <p className="mt-2 text-sm text-gray-600">{event.location}</p>
+            <h3 className={commonFormClasses.label}>Location</h3>
+            <p className="text-sm text-gray-600">{event.location}</p>
           </div>
         </div>
 
         <div>
-          <h3 className="text-sm font-medium leading-6 text-gray-900">Category</h3>
-          <p className="mt-2 text-sm text-gray-600">{event.categories}</p>
+          <h3 className={commonFormClasses.label}>Category</h3>
+          <p className="text-sm text-gray-600">{event.categories}</p>
         </div>
       </div>
     </div>

@@ -137,6 +137,20 @@ const CreateEvents = () => {
             <option value="community">Community</option>
             <option value="nightlife">Nightlife</option>
             <option value="other">Other</option>
+            <option value="games">Games</option>
+            <option value="education">Education</option>
+            <option value="health">Health & Wellness</option>
+            <option value="outdoors">Outdoors & Adventure</option>
+            <option value="tech">Technology</option>
+            <option value="fashion">Fashion</option>
+            <option value="business">Business & Networking</option>
+            <option value="science">Science & Innovation</option>
+            <option value="food">Food & Drink</option>
+            <option value="fashion">Fashion</option>
+            <option value="travel">Travel</option>
+            <option value="dating">Dating</option>
+
+            
           </select>
         </div>
 

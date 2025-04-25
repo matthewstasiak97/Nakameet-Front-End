@@ -3,6 +3,7 @@ import { Router } from "react-router";
 import { useState } from "react";
 import EventBar from "../EventBar/eventBar";
 import SearchBar from "../SearchBar/searchBar";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [searchText, setSearchText] = useState("");

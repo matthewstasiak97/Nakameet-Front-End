@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-function EventBar({ searchText = "sunset" }) {
+function EventBar({ searchText = "" }) {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch("http://localhost:3000/api"); //change this to use the .env
+        const res = await fetch("http://localhost:3000/api"); // TODO: Move URL to .env
         const data = await res.json();
         setEvents(data);
       } catch (err) {
@@ -15,15 +15,22 @@ function EventBar({ searchText = "sunset" }) {
     }
     loadEvents();
   }, []);
-  const filteredEvents = events.filter((evt) => {
-    console.log(evt.title, searchText);
-    evt.title.toLowerCase().includes(searchText.toLowerCase());
-  });
+
+  const filteredEvents = events
+    .filter((evt) => {
+      return evt.title.toLowerCase().includes(searchText.toLowerCase());
+    })
+    .sort((a, b) => {
+      return (
+        a.title.toLowerCase().indexOf(searchText.toLowerCase()) -
+        b.title.toLowerCase().indexOf(searchText.toLowerCase())
+      );
+    });
 
   return (
     <div className="event-bar">
       <ul>
-        {events.map((evt) => (
+        {filteredEvents.map((evt) => (
           <li key={evt._id}>
             <h3>{evt.title}</h3>
             <p>{evt.description}</p>

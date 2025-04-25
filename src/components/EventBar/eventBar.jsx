@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+// Get the backend URL from environment variables
+const BACKEND_URL = import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3000";
+
 function EventBar({ searchText = "" }) {
   const [events, setEvents] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -8,7 +11,7 @@ function EventBar({ searchText = "" }) {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch("http://localhost:3000/api");
+        const res = await fetch(`${BACKEND_URL}/api`);
         const data = await res.json();
         setEvents(data);
       } catch (err) {
@@ -20,7 +23,7 @@ function EventBar({ searchText = "" }) {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/api/${id}`, { method: "DELETE" });
+      await fetch(`${BACKEND_URL}/api/${id}`, { method: "DELETE" });
       setEvents(events.filter(evt => evt._id !== id));
     } catch (err) {
       console.error("Failed to delete event:", err);
@@ -34,7 +37,7 @@ function EventBar({ searchText = "" }) {
 
   const handleSave = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/events/${id}`, {
+      const res = await fetch(`${BACKEND_URL}/api/events/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editedEvent)

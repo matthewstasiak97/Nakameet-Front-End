@@ -20,7 +20,7 @@ const App = () => {
         <NavBar />
         <div className="main-content">
           <Routes>
-            <Route path="/events" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />
             <Route path="/events/:id" element={<EventDetail />} />

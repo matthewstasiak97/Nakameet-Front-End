@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // import { useContext, useState } from "react";
 //import { Routes, Route } from "react-router";
 import "./App.css";
@@ -20,6 +20,7 @@ const App = () => {
         <NavBar />
         <div className="main-content">
           <Routes>
+            <Route path="/" element={<Navigate to="/events" replace />} />
             <Route path="/events" element={<Home />} />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/sign-in" element={<SignInForm />} />

@@ -29,48 +29,28 @@ export const signUp = async (formData) => {
 
 export const signIn = async (formData) => {
   try {
-    console.log('Attempting to sign in with URL:', `${BASE_URL}/sign-in`);
-    console.log('Form data:', formData);
-
     const res = await fetch(`${BASE_URL}/sign-in`, {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error('Sign-in response not ok:', {
-        status: res.status,
-        statusText: res.statusText,
-        errorText
-      });
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-
     const data = await res.json();
-    console.log("Sign-in response data:", data);
+    console.log("Data: ", data);
 
     if (data.err) {
-      console.error('Server returned error:', data.err);
       throw new Error(data.err);
     }
 
     if (!data.token) {
-      console.error('No token in response');
-      throw new Error("Invalid response from server - no token received");
+      throw new Error("Invalid response from server");
     }
 
     localStorage.setItem("token", data.token);
-    const payload = JSON.parse(atob(data.token.split(".")[1])).payload;
-    console.log('Successfully signed in user:', payload);
-    return payload;
+    return JSON.parse(atob(data.token.split(".")[1])).payload;
   } catch (err) {
-    console.error('Sign-in error:', err);
-    throw new Error(`Sign-in failed: ${err.message}`);
+    console.log(err);
+    throw new Error(err);
   }
 };
 

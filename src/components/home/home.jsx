@@ -7,7 +7,11 @@ import SearchBar from "../SearchBar/searchBar";
 function Home() {
   const [searchText, setSearchText] = useState("");
   return (
+
     <div>
+      <Link to="/events/new">
+        <button>Add Event</button>
+      </Link>
       home
       <SearchBar value={searchText} onSearchChange={setSearchText} />
       <EventBar searchText={searchText} />

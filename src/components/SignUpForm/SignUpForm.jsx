@@ -62,6 +62,7 @@ const SignUpForm = () => {
           <input
             type="password"
             id="confirm"
+            name ="passwordConf"
             value={formData.passwordConf}
             onChange={handleChange}
             required

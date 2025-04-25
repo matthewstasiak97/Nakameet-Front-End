@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; // react-router-dom!
-import { signIn } from "../../services/authService.js";
+import { signIn } from "../../services/userService.js";
 import { UserContext } from "../../contexts/UserContext.jsx";
 export default function SignInForm() {
   const { setUser } = useContext(UserContext); // pass your context

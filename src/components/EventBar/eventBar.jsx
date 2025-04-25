@@ -11,7 +11,7 @@ function EventBar({ searchText = "" }) {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch(`${BACKEND_URL}/api`);
+        const res = await fetch(`${BACKEND_URL}/events`);
         const data = await res.json();
         setEvents(data);
       } catch (err) {
@@ -23,7 +23,7 @@ function EventBar({ searchText = "" }) {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${BACKEND_URL}/api/${id}`, { method: "DELETE" });
+      await fetch(`${BACKEND_URL}/events/${id}`, { method: "DELETE" });
       setEvents(events.filter(evt => evt._id !== id));
     } catch (err) {
       console.error("Failed to delete event:", err);
@@ -37,7 +37,7 @@ function EventBar({ searchText = "" }) {
 
   const handleSave = async (id) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/events/${id}`, {
+      const res = await fetch(`${BACKEND_URL}/events/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editedEvent)

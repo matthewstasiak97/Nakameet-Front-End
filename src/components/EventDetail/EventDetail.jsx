@@ -1,25 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { showEvent, deleteEvent, updateEvent, createEvent } from "../../services/eventService.js";
+import { UserContext } from "../../contexts/UserContext";
+import "../Events/CreateEvents.css";
 
 // Predefined categories for the dropdown
 const CATEGORIES = [
-  "Music",
-  "Sports",
-  "Food & Drink",
-  "Arts & Culture",
-  "Technology",
-  "Business",
-  "Education",
-  "Entertainment",
-  "Health & Wellness",
-  "Community",
-  "Other"
+  { id: "music", name: "Music" },
+  { id: "sports", name: "Sports" },
+  { id: "food", name: "Food & Drink" },
+  { id: "arts", name: "Arts & Culture" },
+  { id: "community", name: "Community" },
+  { id: "nightlife", name: "Nightlife" },
+  { id: "games", name: "Games" },
+  { id: "education", name: "Education" },
+  { id: "health", name: "Health & Wellness" },
+  { id: "outdoors", name: "Outdoors & Adventure" },
+  { id: "tech", name: "Technology" },
+  { id: "fashion", name: "Fashion" },
+  { id: "business", name: "Business & Networking" },
+  { id: "science", name: "Science & Innovation" },
+  { id: "travel", name: "Travel" },
+  { id: "dating", name: "Dating" },
+  { id: "other", name: "Other" }
 ];
 
 const EventDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,9 +36,9 @@ const EventDetail = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    date_time: new Date().toISOString().slice(0, 16),
+    date_time: "",
     location: "",
-    categories: ""
+    category_id: ""
   });
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -43,17 +52,20 @@ const EventDetail = () => {
       try {
         setLoading(true);
         const eventData = await showEvent(id);
-        setEvent(eventData);
         
-        const dateTime = eventData.date_time ? new Date(eventData.date_time) : new Date();
+        // Parse the response if it's a string
+        const parsedEvent = typeof eventData === 'string' ? JSON.parse(eventData) : eventData;
+        setEvent(parsedEvent);
+        
+        const dateTime = parsedEvent.date_time ? new Date(parsedEvent.date_time) : new Date();
         const formattedDate = dateTime.toISOString().slice(0, 16);
         
         setFormData({
-          title: eventData.title || "",
-          description: eventData.description || "",
+          title: parsedEvent.title || "",
+          description: parsedEvent.description || "",
           date_time: formattedDate,
-          location: eventData.location || "",
-          categories: eventData.categories || ""
+          location: parsedEvent.location || "",
+          category_id: parsedEvent.category_id || ""
         });
         setError(null);
       } catch (error) {
@@ -86,31 +98,53 @@ const EventDetail = () => {
       description: event.description || "",
       date_time: formattedDate,
       location: event.location || "",
-      categories: event.categories || ""
+      category_id: event.category_id || ""
     });
   };
 
   const handleSave = async () => {
     try {
+      if (!user) {
+        setError("Please sign in to create or edit an event");
+        return;
+      }
+
+      if (!formData.date_time) {
+        setError("Please select a date and time for the event");
+        return;
+      }
+
       setLoading(true);
-      let savedEvent;
+      const dateTime = new Date(formData.date_time).toISOString();
       
+      const eventData = {
+        ...formData,
+        date_time: dateTime,
+        user_id: user._id
+      };
+
+      // Convert to JSON string before sending
+      const jsonData = JSON.stringify(eventData);
+
+      let savedEvent;
       if (id) {
-        savedEvent = await updateEvent(formData, id);
+        savedEvent = await updateEvent(jsonData, id);
       } else {
-        savedEvent = await createEvent(formData);
+        savedEvent = await createEvent(jsonData);
       }
       
-      setEvent(savedEvent);
+      // Parse the response if it's a string
+      const parsedEvent = typeof savedEvent === 'string' ? JSON.parse(savedEvent) : savedEvent;
+      setEvent(parsedEvent);
       setIsFormMode(false);
       setError(null);
       
       if (!id) {
-        navigate(`/events/${savedEvent.id}`);
+        navigate(`/events/${parsedEvent.id}`);
       }
     } catch (error) {
       console.error("Error saving event:", error);
-      setError(`Failed to ${id ? 'update' : 'create'} event`);
+      setError(`Failed to ${id ? 'update' : 'create'} event. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -120,8 +154,14 @@ const EventDetail = () => {
     if (window.confirm("Are you sure you want to delete this event?")) {
       try {
         setIsDeleting(true);
-        await deleteEvent(id);
-        navigate("/events");
+        const result = await deleteEvent(id);
+        // Parse the response if needed
+        const parsedResult = typeof result === 'string' ? JSON.parse(result) : result;
+        if (parsedResult && !parsedResult.error) {
+          navigate("/events");
+        } else {
+          throw new Error(parsedResult.error || 'Failed to delete event');
+        }
       } catch (error) {
         console.error("Error deleting event:", error);
         setError("Failed to delete event");
@@ -130,7 +170,7 @@ const EventDetail = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -150,190 +190,179 @@ const EventDetail = () => {
     });
   };
 
+  if (!user) {
+    return (
+      <div className="create-event-container">
+        <h2>Please sign in to create or edit events</h2>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-lg text-gray-600 animate-pulse">Loading...</div>
+      <div className="create-event-container">
+        <div className="loading-spinner">Loading...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-lg text-red-600 bg-red-50 p-4 rounded-lg shadow">{error}</div>
+      <div className="create-event-container">
+        <div className="error-container">
+          <p className="error-message">{error}</p>
+        </div>
       </div>
     );
   }
 
-  const commonFormClasses = {
-    input: "block w-full rounded-lg border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-all duration-200 ease-in-out hover:ring-gray-400",
-    label: "block text-sm font-medium leading-6 text-gray-900 mb-2",
-    button: "rounded-lg px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-200 ease-in-out",
-    buttonPrimary: "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
-    buttonSecondary: "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-  };
-
-  const formContent = (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {id ? 'Edit Event' : 'Create New Event'}
-        </h1>
-      </div>
-
-      <div className="space-y-6">
-        <div>
-          <label htmlFor="title" className={commonFormClasses.label}>
-            Event Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            className={commonFormClasses.input}
-            placeholder="Enter event title"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="description" className={commonFormClasses.label}>
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            rows="4"
-            className={commonFormClasses.input}
-            placeholder="Describe your event"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div>
-            <label htmlFor="date_time" className={commonFormClasses.label}>
-              Date & Time
-            </label>
-            <input
-              type="datetime-local"
-              id="date_time"
-              name="date_time"
-              value={formData.date_time}
-              onChange={handleInputChange}
-              className={commonFormClasses.input}
-            />
+  if (isFormMode) {
+    return (
+      <div className="create-event-container">
+        <h2>{id ? 'Edit Event' : 'Create New Event'}</h2>
+        {error && (
+          <div className="error-container">
+            <p className="error-message">{error}</p>
           </div>
-
-          <div>
-            <label htmlFor="location" className={commonFormClasses.label}>
-              Location
-            </label>
+        )}
+        <form onSubmit={(e) => e.preventDefault()} className="create-event-form">
+          <div className="form-group">
+            <label htmlFor="title">Event Title:</label>
             <input
               type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              className={commonFormClasses.input}
-              placeholder="Event location"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              placeholder="Enter event title"
+              autoComplete="off"
+              className="form-input"
             />
           </div>
-        </div>
 
-        <div>
-          <label htmlFor="categories" className={commonFormClasses.label}>
-            Category
-          </label>
-          <select
-            id="categories"
-            name="categories"
-            value={formData.categories}
-            onChange={handleInputChange}
-            className={commonFormClasses.input}
-          >
-            <option value="">Select a category</option>
-            {CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              placeholder="Describe your event"
+              rows="4"
+              autoComplete="off"
+              className="form-textarea"
+            />
+          </div>
+
+          <div className="form-group grid">
+            <div>
+              <label htmlFor="date_time">Date and Time:</label>
+              <input
+                type="datetime-local"
+                id="date_time"
+                name="date_time"
+                value={formData.date_time}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="location">Location:</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                required
+                placeholder="Enter event location"
+                autoComplete="off"
+                className="form-input"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="category_id">Category:</label>
+            <select
+              id="category_id"
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
+              required
+              className="form-select"
+            >
+              <option value="">Select a category</option>
+              {CATEGORIES.map(category => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="button-group">
+            <button type="button" onClick={handleSave} className="submit-button">
+              {id ? 'Save Changes' : 'Create Event'}
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
+    );
+  }
 
-      <div className="flex justify-end space-x-4 pt-6">
-        <button
-          onClick={handleCancel}
-          className={`${commonFormClasses.button} ${commonFormClasses.buttonSecondary}`}
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleSave}
-          className={`${commonFormClasses.button} ${commonFormClasses.buttonPrimary}`}
-        >
-          {id ? 'Save Changes' : 'Create Event'}
-        </button>
-      </div>
-    </div>
-  );
-
-  const viewContent = event && (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">{event.title}</h1>
-        <div className="flex space-x-4">
-          <button
-            onClick={handleEdit}
-            className={`${commonFormClasses.button} ${commonFormClasses.buttonPrimary}`}
-          >
+  return (
+    <div className="create-event-container">
+      <div className="event-detail-header">
+        <h2>{event.title}</h2>
+        <div className="button-group">
+          <button onClick={handleEdit} className="edit-button">
             Edit Event
           </button>
           <button
             onClick={handleDelete}
             disabled={isDeleting}
-            className={`${commonFormClasses.button} bg-red-600 text-white hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 disabled:opacity-50`}
+            className="delete-button"
           >
             {isDeleting ? "Deleting..." : "Delete Event"}
           </button>
         </div>
       </div>
 
-      <div className="space-y-6 mt-8">
-        <div>
-          <h3 className={commonFormClasses.label}>Description</h3>
-          <p className="text-sm text-gray-600">{event.description}</p>
+      <div className="event-detail-content">
+        <div className="detail-group">
+          <label>Description:</label>
+          <p>{event.description}</p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="detail-group grid">
           <div>
-            <h3 className={commonFormClasses.label}>Date & Time</h3>
-            <p className="text-sm text-gray-600">{formatDate(event.date_time)}</p>
+            <label>Date and Time:</label>
+            <p>{formatDate(event.date_time)}</p>
           </div>
 
           <div>
-            <h3 className={commonFormClasses.label}>Location</h3>
-            <p className="text-sm text-gray-600">{event.location}</p>
+            <label>Location:</label>
+            <p>{event.location}</p>
           </div>
         </div>
 
-        <div>
-          <h3 className={commonFormClasses.label}>Category</h3>
-          <p className="text-sm text-gray-600">{event.categories}</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow-sm p-8">
-          {isFormMode ? formContent : viewContent}
+        <div className="detail-group">
+          <label>Category:</label>
+          <p>
+            {CATEGORIES.find(c => c.id === event.category_id)?.name || event.category_id}
+          </p>
         </div>
       </div>
     </div>

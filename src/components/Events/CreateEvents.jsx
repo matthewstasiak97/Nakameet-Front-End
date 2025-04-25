@@ -32,9 +32,10 @@ const CreateEvents = () => {
     description: "",
     location: "",
     date_time: "",
-    category_id: ""
+    category: ""
   });
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,10 +43,15 @@ const CreateEvents = () => {
       ...prevFormData,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
     try {
       if (!user) {
         setError("Please sign in to create an event");
@@ -69,7 +75,9 @@ const CreateEvents = () => {
       navigate("/events");
     } catch (err) {
       console.error("Error creating event:", err);
-      setError(err.message || "Failed to create event. Please try again.");
+      setError(err.response?.data?.message || err.message || "Failed to create event. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -143,11 +151,11 @@ const CreateEvents = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="category_id">Category:</label>
+          <label htmlFor="category">Category:</label>
           <select
-            id="category_id"
-            name="category_id"
-            value={formData.category_id}
+            id="category"
+            name="category"
+            value={formData.category}
             onChange={handleChange}
             required
           >
@@ -160,8 +168,12 @@ const CreateEvents = () => {
           </select>
         </div>
 
-        <button type="submit" className="submit-button">
-          Create Event
+        <button 
+          type="submit" 
+          className="submit-button"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Creating..." : "Create Event"}
         </button>
       </form>
     </div>

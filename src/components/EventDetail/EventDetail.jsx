@@ -224,7 +224,7 @@ const EventDetail = () => {
     description: "",
     date_time: "",
     location: "",
-    category_id: ""
+    category: ""
   });
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -253,7 +253,7 @@ const EventDetail = () => {
           description: eventData.description || "",
           date_time: formattedDate,
           location: eventData.location || "",
-          category_id: eventData.category_id || ""
+          category: eventData.category || ""
         });
         setError(null);
       } catch (error) {
@@ -287,7 +287,7 @@ const EventDetail = () => {
       description: event.description || "",
       date_time: formattedDate,
       location: event.location || "",
-      category_id: event.category_id || ""
+      category: event.category || ""
     });
   };
 
@@ -300,7 +300,7 @@ const EventDetail = () => {
         return;
       }
 
-      if (!formData.title || !formData.description || !formData.location || !formData.date_time || !formData.category_id) {
+      if (!formData.title || !formData.description || !formData.location || !formData.date_time || !formData.category) {
         setError("Please fill in all required fields");
         return;
       }
@@ -489,11 +489,11 @@ const EventDetail = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="category_id">Category:</label>
+              <label htmlFor="category">Category:</label>
               <select
-                id="category_id"
-                name="category_id"
-                value={formData.category_id}
+                id="category"
+                name="category"
+                value={formData.category}
                 onChange={handleChange}
                 required
               >
@@ -572,8 +572,8 @@ const EventDetail = () => {
           <div className="detail-group">
             <label>Category</label>
             <p className="detail-value">
-              {event?.category_id ? 
-                (CATEGORIES.find(c => c.id === event.category_id)?.name || event.category_id)
+              {event?.category ? 
+                (CATEGORIES.find(c => c.id === event.category)?.name || event.category)
                 : 'Not specified'
               }
             </p>

@@ -6,7 +6,7 @@ function EventBar({ searchText = "sunset" }) {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch("http://localhost:3000/events"); //change this to use the .env
+        const res = await fetch("http://localhost:3000/api"); //change this to use the .env
         const data = await res.json();
         setEvents(data);
       } catch (err) {

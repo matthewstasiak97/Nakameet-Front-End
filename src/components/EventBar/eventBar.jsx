@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./EventBar.css"; // << Make sure you import your EventBar-specific CSS here
 
-// Get the backend URL from environment variables
 const BACKEND_URL = import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3000";
 
 const CATEGORIES = {
@@ -106,21 +106,23 @@ function EventBar({ searchText = "" }) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="event-card-container">
       {filteredEvents.map((evt) => (
-        <Link to={`/events/${evt._id}`} key={evt._id} className="block">
-          <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
-            <div className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <h3 className="text-base font-semibold text-gray-900">{evt.title}</h3>
-                <span className="px-2 py-0.5 text-xs font-medium bg-indigo-50 text-indigo-700 rounded-full">
+        <Link to={`/events/${evt._id}`} key={evt._id} className="event-card-link">
+          <div className="event-card">
+            <div className="event-card-content">
+              <div className="event-card-header">
+                <h3 className="event-card-title">{evt.title}</h3>
+                <span className="event-card-category">
                   {CATEGORIES[evt.category] || evt.category}
                 </span>
               </div>
-              
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">{evt.description}</p>
-              
-              <div className="space-y-1 text-xs text-gray-500">
+
+              <p className="event-card-description">
+                {evt.description}
+              </p>
+
+              <div className="event-card-footer">
                 <div>{formatDate(evt.date_time)}</div>
                 <div>{evt.location}</div>
               </div>

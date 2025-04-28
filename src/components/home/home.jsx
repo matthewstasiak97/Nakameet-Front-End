@@ -1,29 +1,28 @@
-import React from "react";
-import { Router } from "react-router";
-import { useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import EventBar from "../EventBar/eventBar";
 import SearchBar from "../SearchBar/searchBar";
-import { Link } from "react-router-dom";
+import "./Home.css";  // <-- Correctly imported CSS
 
 function Home() {
   const [searchText, setSearchText] = useState("");
-  
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Events</h1>
+    <div className="container">
+      <div className="header">
+        <h1 className="header-title">Events</h1> {/* <-- ADDED className */}
         <Link to="/events/new">
-          <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 transition-colors duration-200">
-            Add Event
-          </button>
+          <button className="create-event-button">Create Event</button>
         </Link>
       </div>
-      
-      <div className="mb-8">
+
+      <div className="search-bar-wrapper">
         <SearchBar value={searchText} onSearchChange={setSearchText} />
       </div>
-      
-      <EventBar searchText={searchText} />
+
+      <div className="event-bar-wrapper">
+        <EventBar searchText={searchText} />
+      </div>
     </div>
   );
 }

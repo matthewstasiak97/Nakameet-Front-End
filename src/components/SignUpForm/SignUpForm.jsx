@@ -37,7 +37,7 @@ export default function SignUpForm() {
       {/* Sign Up Heading */}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="text-center text-2xl/9 font-bold tracking-tight text-orange-200">
-          Sign up for Nakameet
+          Please Sign Up
         </h2>
       </div>
 

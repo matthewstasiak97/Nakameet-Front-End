@@ -1,12 +1,10 @@
-/* src/components/NavBar/NavBar.css */
- 
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #f8f8f4; /* offwhite */
+  background-color: #f8f8f4;
   padding: 0.5rem 1rem;
   border-radius: 0 0 10px 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -38,8 +36,8 @@
 }
 
 .navbar-button {
-  background-color: #d2b48c; /* unified light brown */
-  color: #333333;            /* dark text for readability */
+  background-color: #d2b48c;
+  color: #333333;
   border: none;
   outline: none;
   padding: 0.5rem 1rem;
@@ -49,18 +47,15 @@
   transition: transform 0.1s ease, filter 0.2s ease;
 }
 
-/* Remove any focus outline */
 .navbar-button:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* Hover: slight darkening */
 .navbar-button:hover {
   filter: brightness(0.9);
 }
 
-/* Active (clicked): move up 10px */
 .navbar-button:active {
   transform: translateY(-10px);
   outline: none;

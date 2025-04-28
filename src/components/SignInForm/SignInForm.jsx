@@ -22,23 +22,19 @@ export default function SignInForm() {
       navigate("/");
     } catch (err) {
       console.error("Sign-in failed:", err);
-      // TODO: surface an error message in the UI
     }
   }
 
   return (
     <main className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      {/* Heading */}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-orange-200">
           Sign in to your account
         </h2>
       </div>
 
-      {/* Form */}
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
-          {/* Username Field */}
           <div className="px-3 flex flex-col items-start">
             <label
               htmlFor="username"
@@ -59,7 +55,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Password Field */}
           <div className="px-3 flex flex-col items-start">
             <div className="w-full flex items-center justify-between">
               <label
@@ -82,7 +77,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Submit Button */}
           <div className="px-3">
             <button
               type="submit"

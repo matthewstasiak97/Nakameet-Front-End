@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import EventBar from "../EventBar/eventBar";
 import SearchBar from "../SearchBar/searchBar";
-import "./Home.css";  // <-- Correctly imported CSS
+import "./Home.css";
 
 function Home() {
   const [searchText, setSearchText] = useState("");
@@ -10,7 +10,7 @@ function Home() {
   return (
     <div className="container">
       <div className="header">
-        <h1 className="header-title">Events</h1> {/* <-- ADDED className */}
+        <h1 className="header-title">Events</h1>
         <Link to="/events/new">
           <button className="create-event-button">Create Event</button>
         </Link>

@@ -27,17 +27,14 @@ export default function SignUpForm() {
 
   return (
     <main className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      {/* Heading */}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-orange-200">
           Sign up for Nakameet
         </h2>
       </div>
 
-      {/* Form */}
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
-          {/* Username */}
           <div className="px-3 flex flex-col items-start">
             <label
               htmlFor="username"
@@ -58,7 +55,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Password */}
           <div className="px-3 flex flex-col items-start">
             <label
               htmlFor="password"
@@ -79,7 +75,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Confirm Password */}
           <div className="px-3 flex flex-col items-start">
             <label
               htmlFor="passwordConf"
@@ -100,7 +95,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Submit Button */}
           <div className="px-3">
             <button
               type="submit"

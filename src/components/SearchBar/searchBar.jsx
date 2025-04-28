@@ -1,5 +1,4 @@
-import React from 'react';
-// import './SearchBar.css';
+import React from "react";
 
 export default function SearchBar({ value, onSearchChange }) {
   return (
@@ -8,7 +7,7 @@ export default function SearchBar({ value, onSearchChange }) {
         type="text"
         placeholder="Search events by title…"
         value={value}
-        onChange={e => onSearchChange(e.target.value)}
+        onChange={(e) => onSearchChange(e.target.value)}
       />
     </div>
   );

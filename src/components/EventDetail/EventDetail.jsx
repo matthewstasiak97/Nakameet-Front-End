@@ -1,13 +1,194 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  showEvent,
-  deleteEvent,
-  updateEvent,
-  createEvent,
-} from "../../services/eventService.js";
+import { showEvent, deleteEvent, updateEvent, createEvent } from "../../services/eventService.js";
 import { UserContext } from "../../contexts/UserContext";
 import "../Events/CreateEvents.css";
+
+// Add additional styles for the event detail view
+const styles = `
+.event-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.event-detail-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.detail-group {
+  margin-bottom: 1.5rem;
+}
+
+.detail-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(17, 24, 39);
+  margin-bottom: 0.5rem;
+}
+
+.detail-group p {
+  color: rgb(55, 65, 81);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.button-group button {
+  flex: 1;
+}
+
+.edit-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(79, 70, 229);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.edit-button:hover {
+  background-color: rgb(67, 56, 202);
+}
+
+.delete-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(220, 38, 38);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.delete-button:hover:not(:disabled) {
+  background-color: rgb(185, 28, 28);
+}
+
+.delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  color: rgb(17, 24, 39);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(209, 213, 219);
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.cancel-button:hover {
+  background-color: rgb(249, 250, 251);
+}
+
+.loading-spinner {
+  text-align: center;
+  color: rgb(107, 114, 128);
+  font-size: 0.875rem;
+  padding: 1rem;
+}
+
+.error-container {
+  margin-bottom: 1.5rem;
+}
+
+.detail-value {
+  color: rgb(55, 65, 81);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+
+.event-detail-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+}
+
+.event-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgb(229, 231, 235);
+}
+
+.detail-group {
+  margin-bottom: 2rem;
+}
+
+.detail-group:last-child {
+  margin-bottom: 0;
+}
+
+.detail-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(17, 24, 39);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.button-group button {
+  min-width: 100px;
+}
+
+@media (max-width: 640px) {
+  .event-detail-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .button-group {
+    justify-content: stretch;
+  }
+
+  .button-group button {
+    flex: 1;
+  }
+}
+`;
+
+// Add the styles to the document
+const styleSheet = document.createElement("style");
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
 
 // Predefined categories for the dropdown
 const CATEGORIES = [
@@ -27,7 +208,7 @@ const CATEGORIES = [
   { id: "science", name: "Science & Innovation" },
   { id: "travel", name: "Travel" },
   { id: "dating", name: "Dating" },
-  { id: "other", name: "Other" },
+  { id: "other", name: "Other" }
 ];
 
 const EventDetail = () => {
@@ -43,7 +224,7 @@ const EventDetail = () => {
     description: "",
     date_time: "",
     location: "",
-    category: "",
+    category: ""
   });
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -57,24 +238,22 @@ const EventDetail = () => {
       try {
         setLoading(true);
         const eventData = await showEvent(id);
-
+        
         if (!eventData) {
-          throw new Error("Event not found");
+          throw new Error('Event not found');
         }
 
         setEvent(eventData);
-
-        const dateTime = eventData.date_time
-          ? new Date(eventData.date_time)
-          : new Date();
+        
+        const dateTime = eventData.date_time ? new Date(eventData.date_time) : new Date();
         const formattedDate = dateTime.toISOString().slice(0, 16);
-
+        
         setFormData({
           title: eventData.title || "",
           description: eventData.description || "",
           date_time: formattedDate,
           location: eventData.location || "",
-          category: eventData.category || "",
+          category: eventData.category || ""
         });
         setError(null);
       } catch (error) {
@@ -98,54 +277,48 @@ const EventDetail = () => {
       navigate("/events");
       return;
     }
-
+    
     setIsFormMode(false);
     const dateTime = event.date_time ? new Date(event.date_time) : new Date();
     const formattedDate = dateTime.toISOString().slice(0, 16);
-
+    
     setFormData({
       title: event.title || "",
       description: event.description || "",
       date_time: formattedDate,
       location: event.location || "",
-      category: event.category || "",
+      category: event.category || ""
     });
   };
 
   const handleSave = async (e) => {
     if (e) e.preventDefault();
-
+    
     try {
       if (!user) {
         setError("Please sign in to create or edit an event");
         return;
       }
 
-      if (
-        !formData.title ||
-        !formData.description ||
-        !formData.location ||
-        !formData.date_time ||
-        !formData.category
-      ) {
+      if (!formData.title || !formData.description || !formData.location || !formData.date_time || !formData.category) {
         setError("Please fill in all required fields");
         return;
       }
 
       setLoading(true);
       const dateTime = new Date(formData.date_time).toISOString();
-
+      
       const eventData = {
         ...formData,
         date_time: dateTime,
-        user_id: user._id,
+        user_id: user._id
       };
 
       let savedEvent;
       if (id) {
         const response = await updateEvent(eventData, id);
         if (!response) {
-          throw new Error("Failed to update event");
+          throw new Error('Failed to update event');
         }
         if (response.error) {
           throw new Error(response.error);
@@ -154,7 +327,7 @@ const EventDetail = () => {
       } else {
         const response = await createEvent(eventData);
         if (!response) {
-          throw new Error("Failed to create event");
+          throw new Error('Failed to create event');
         }
         if (response.error) {
           throw new Error(response.error);
@@ -165,15 +338,12 @@ const EventDetail = () => {
       setEvent(savedEvent);
       setIsFormMode(false);
       setError(null);
-
+      
       // Navigate back to events list after successful save
       navigate("/events");
     } catch (error) {
       console.error("Error saving event:", error);
-      setError(
-        error.message ||
-          `Failed to ${id ? "update" : "create"} event. Please try again.`
-      );
+      setError(error.message || `Failed to ${id ? 'update' : 'create'} event. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -185,12 +355,11 @@ const EventDetail = () => {
         setIsDeleting(true);
         const result = await deleteEvent(id);
         // Parse the response if needed
-        const parsedResult =
-          typeof result === "string" ? JSON.parse(result) : result;
+        const parsedResult = typeof result === 'string' ? JSON.parse(result) : result;
         if (parsedResult && !parsedResult.error) {
           navigate("/events");
         } else {
-          throw new Error(parsedResult.error || "Failed to delete event");
+          throw new Error(parsedResult.error || 'Failed to delete event');
         }
       } catch (error) {
         console.error("Error deleting event:", error);
@@ -202,21 +371,21 @@ const EventDetail = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
@@ -256,7 +425,7 @@ const EventDetail = () => {
     return (
       <div className="create-event-container">
         <div className="create-event-form">
-          <h2>{id ? "Edit Event" : "Create New Event"}</h2>
+          <h2>{id ? 'Edit Event' : 'Create New Event'}</h2>
           {error && (
             <div className="error-container">
               <p className="error-message">{error}</p>
@@ -329,7 +498,7 @@ const EventDetail = () => {
                 required
               >
                 <option value="">Select a category</option>
-                {CATEGORIES.map((category) => (
+                {CATEGORIES.map(category => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
@@ -339,7 +508,7 @@ const EventDetail = () => {
 
             <div className="button-group">
               <button type="submit" className="submit-button">
-                {id ? "Save Changes" : "Create Event"}
+                {id ? 'Save Changes' : 'Create Event'}
               </button>
               <button
                 type="button"
@@ -360,22 +529,15 @@ const EventDetail = () => {
       <div className="create-event-form">
         <div className="event-detail-header">
           <h2>Event Details</h2>
-          <div
-            className="button-group"
-            style={{ margin: 0, justifyContent: "flex-end" }}
-          >
-            <button
-              onClick={handleEdit}
-              className="edit-button"
-              style={{ minWidth: "100px" }}
-            >
+          <div className="button-group" style={{ margin: 0, justifyContent: 'flex-end' }}>
+            <button onClick={handleEdit} className="edit-button" style={{ minWidth: '100px' }}>
               Edit Event
             </button>
             <button
               onClick={handleDelete}
               disabled={isDeleting}
               className="delete-button"
-              style={{ minWidth: "100px" }}
+              style={{ minWidth: '100px' }}
             >
               {isDeleting ? "Deleting..." : "Delete Event"}
             </button>
@@ -397,33 +559,29 @@ const EventDetail = () => {
             <div>
               <label>Date and Time</label>
               <p className="detail-value">
-                {event?.date_time
-                  ? formatDate(event.date_time)
-                  : "Not specified"}
+                {event?.date_time ? formatDate(event.date_time) : 'Not specified'}
               </p>
             </div>
 
             <div>
               <label>Location</label>
-              <p className="detail-value">
-                {event?.location || "Not specified"}
-              </p>
+              <p className="detail-value">{event?.location || 'Not specified'}</p>
             </div>
           </div>
 
           <div className="detail-group">
             <label>Category</label>
             <p className="detail-value">
-              {event?.category
-                ? CATEGORIES.find((c) => c.id === event.category)?.name ||
-                  event.category
-                : "Not specified"}
+              {event?.category ? 
+                (CATEGORIES.find(c => c.id === event.category)?.name || event.category)
+                : 'Not specified'
+              }
             </p>
           </div>
 
           <div className="detail-group">
             <label>Created By</label>
-            <p className="detail-value">{event?.user_id || "Unknown"}</p>
+            <p className="detail-value">{event?.user_id || 'Unknown'}</p>
           </div>
         </div>
       </div>

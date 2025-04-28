@@ -63,7 +63,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Password */}
           <div className="px-3 flex flex-col items-start">
             <label htmlFor="password" className="ml-3 text-sm/6 font-medium text-orange-200">
               Password
@@ -81,7 +80,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Confirm Password */}
           <div className="px-3 flex flex-col items-start">
             <label htmlFor="passwordConf" className="ml-3 text-sm/6 font-medium text-orange-200">
               Confirm Password
@@ -99,7 +97,6 @@ export default function SignUpForm() {
             />
           </div>
 
-          {/* Submit Button */}
           <div className="px-3">
             <button
               type="submit"

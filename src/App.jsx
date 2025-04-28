@@ -12,8 +12,6 @@ import { UserContext } from "./contexts/UserContext";
 import EventDetail from "./components/EventDetail/EventDetail.jsx";
 
 const App = () => {
-  // const { user } = useContext(UserContext);
-
   return (
     <>
       <div className="app">
@@ -26,9 +24,6 @@ const App = () => {
             <Route path="/sign-in" element={<SignInForm />} />
             <Route path="/events/new" element={<CreateEvents />} />
             <Route path="/events/:id" element={<EventDetail />} />
-            {/* <Route path="/events/:id/edit" element={<EditEvent />} />
-            <Route path="/events/:id/delete" element={<DeleteEvent />} />
-            <Route path="/events/create" element={<CreateEvents />} /> */}
           </Routes>
         </div>
       </div>

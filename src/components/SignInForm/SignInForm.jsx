@@ -22,7 +22,6 @@ export default function SignInForm() {
       navigate("/");
     } catch (err) {
       console.error("Sign-in failed:", err);
-      // TODO: surface an error message in the UI
     }
   }
 
@@ -67,7 +66,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Password Field */}
           <div className="px-3 flex flex-col items-start">
             <div className="w-full flex items-center justify-between">
               <label
@@ -90,7 +88,6 @@ export default function SignInForm() {
             />
           </div>
 
-          {/* Submit Button */}
           <div className="px-3">
             <button
               type="submit"

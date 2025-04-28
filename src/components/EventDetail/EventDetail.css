@@ -1,4 +1,4 @@
-/* Modern, sleek EventDetail styling */
+
 .event-detail {
   max-width: 800px;
   margin: 2rem auto;
@@ -8,7 +8,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hero section with gradient overlay */
 .event-header {
   display: flex;
   justify-content: space-between;
@@ -110,7 +109,6 @@
   line-height: 1.6;
 }
 
-/* Date and location with icons */
 .info-group:nth-child(2) h3::before,
 .info-group:nth-child(3) h3::before {
   font-family: "Font Awesome 5 Free";
@@ -120,14 +118,14 @@
 }
 
 .info-group:nth-child(2) h3::before {
-  content: '\f073'; /* Calendar icon */
+  content: '\f073'; 
 }
 
 .info-group:nth-child(3) h3::before {
-  content: '\f3c5'; /* Map marker icon */
+  content: '\f3c5'; 
 }
 
-/* Categories styling */
+
 .categories {
   display: flex;
   flex-wrap: wrap;
@@ -171,7 +169,7 @@
   background-color: white;
 }
 
-/* Loading and error states */
+
 .loading {
   text-align: center;
   color: #666;
@@ -186,7 +184,6 @@
   padding: 2rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .event-detail {
     margin: 1rem;

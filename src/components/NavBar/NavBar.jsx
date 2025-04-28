@@ -46,9 +46,6 @@ function NavBar() {
       ) : (
         <ul className="navbar-list">
           <li className="navbar-item">
-            <Link to="/events">
-              <button className="navbar-button btn-events">Events</button>
-            </Link>
           </li>
           <li className="navbar-item">
             <Link to="/sign-up">

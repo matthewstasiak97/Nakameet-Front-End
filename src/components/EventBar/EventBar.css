@@ -1,6 +1,4 @@
-/* src/components/EventBar/EventBar.css */
 
-/* Main container for the event cards */
 .event-card-container {
     display: flex;
     flex-wrap: wrap;
@@ -9,13 +7,11 @@
     margin-top: 2rem;
   }
   
-  /* Link wrapper (optional, for hover effects) */
   .event-card-link {
     text-decoration: none;
     color: inherit;
   }
   
-  /* Each event card */
   .event-card {
     width: 300px;
     min-height: 250px;
@@ -35,7 +31,6 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
   }
   
-  /* Inside the card */
   .event-card-content {
     padding: 1.5rem;
     display: flex;
@@ -65,8 +60,7 @@
     color: #4f46e5;
     border-radius: 8px;
   }
-  
-  /* Description inside the card */
+
   .event-card-description {
     color: #6b7280;
     font-size: 0.9rem;
@@ -74,7 +68,6 @@
     line-height: 1.4;
   }
   
-  /* Footer with time and location */
   .event-card-footer {
     font-size: 0.8rem;
     color: #9ca3af;

@@ -27,22 +27,27 @@ export default function SignUpForm() {
 
   return (
     <main className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      {/* Heading */}
+      
+      {/* Welcome Text */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-8">
+        <h1 className="welcome-title">Welcome to Nakameet</h1>
+        <p className="welcome-subtitle">Your friendly meetup app for nearby friends ✨</p>
+      </div>
+
+      {/* Sign Up Heading */}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-orange-200">
+        <h2 className="text-center text-2xl/9 font-bold tracking-tight text-orange-200">
           Sign up for Nakameet
         </h2>
       </div>
 
       {/* Form */}
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
         <form autoComplete="off" onSubmit={handleSubmit} className="space-y-6">
+          
           {/* Username */}
           <div className="px-3 flex flex-col items-start">
-            <label
-              htmlFor="username"
-              className="ml-3 text-sm/6 font-medium text-orange-200"
-            >
+            <label htmlFor="username" className="ml-3 text-sm/6 font-medium text-orange-200">
               Username
             </label>
             <input
@@ -60,10 +65,7 @@ export default function SignUpForm() {
 
           {/* Password */}
           <div className="px-3 flex flex-col items-start">
-            <label
-              htmlFor="password"
-              className="ml-3 text-sm/6 font-medium text-orange-200"
-            >
+            <label htmlFor="password" className="ml-3 text-sm/6 font-medium text-orange-200">
               Password
             </label>
             <input
@@ -81,10 +83,7 @@ export default function SignUpForm() {
 
           {/* Confirm Password */}
           <div className="px-3 flex flex-col items-start">
-            <label
-              htmlFor="passwordConf"
-              className="ml-3 text-sm/6 font-medium text-orange-200"
-            >
+            <label htmlFor="passwordConf" className="ml-3 text-sm/6 font-medium text-orange-200">
               Confirm Password
             </label>
             <input
@@ -113,6 +112,43 @@ export default function SignUpForm() {
           </div>
         </form>
       </div>
+
+      {/* --- Custom Animations --- */}
+      <style jsx="true">{`
+        @keyframes fadeSlideIn {
+          0% {
+            opacity: 0;
+            transform: translateY(-30px) scale(0.9);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(10px) scale(1.05);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .welcome-title {
+          font-size: 2.5rem;
+          font-weight: 900;
+          background: linear-gradient(90deg, #6366f1, #3b82f6);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          letter-spacing: -0.5px;
+          animation: fadeSlideIn 2s ease-out forwards;
+        }
+
+        .welcome-subtitle {
+          margin-top: 0.5rem;
+          font-size: 1.1rem;
+          font-weight: 500;
+          color: #6b7280;
+          animation: fadeSlideIn 2.5s ease-out forwards;
+        }
+      `}</style>
     </main>
   );
 }
